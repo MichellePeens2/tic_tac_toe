@@ -1,0 +1,27 @@
+.Board {
+  width: 500px;
+  height: 500px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 50px auto;
+}
+
+.Block {
+    border: 2px solid white;
+}
+
+#block0, #block1, #block2 {
+  border-top: none;
+}
+
+#block6, #block7, #block8 {
+  border-bottom: none;
+}
+
+#block0, #block3, #block6 {
+  border-left: none;
+}
+
+#block2, #block5, #block8 {
+  border-right: none;
+}

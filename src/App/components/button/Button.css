@@ -1,0 +1,20 @@
+.Button {
+  font-weight: bolder;
+  color: rgba(91, 157, 148, 1);
+  padding: 8px;
+  margin: 8px;
+  width: fit-content;
+  display: inline-block;
+}
+
+.PrimaryButton {
+  background-color: white;
+}
+
+.SecondaryButton {
+  background-color: #000000;
+}
+
+.DestructiveButton {
+    background-color: #7a3b3b;
+}
