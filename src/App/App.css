@@ -1,13 +1,10 @@
+body {
+  background-color: rgba(91, 157, 148, 1);
+  color: white;
+  font-family: fantasy;
+  font-weight: bold;
+}
+
 .App {
   text-align: center;
-}
-
-.form {
-  border: 1px solid red;
-  padding: 20px;
-}
-
-.result {
-  border: 1px solid green;
-  padding: 20px;
 }
