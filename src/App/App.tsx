@@ -19,17 +19,6 @@ function App() {
     setDidSubmit(true);
   };
 
-  // specifying a dependency is a way to skip running effects to optimize for performance 
-
-  useEffect(() => {
-  }); // no_dependency: means it will run every single time
-
-  useEffect(() => {
-  }, []); // empty_dependency: means it will only run once at initial render
-
-  useEffect(() => {
-  }, [something]); // some_dependency: means it will only when the dependecy changes
-
   useEffect(() => {
     setDisplayBoard(didSubmit && errors.length === 0);
   }, [errors, didSubmit]);
