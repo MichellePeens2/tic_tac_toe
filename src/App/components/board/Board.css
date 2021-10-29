@@ -25,3 +25,7 @@
 #block2, #block5, #block8 {
   border-right: none;
 }
+
+.Red {
+  background-color: red;
+}
