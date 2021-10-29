@@ -8,6 +8,7 @@
 
 .Block {
     border: 2px solid white;
+    position: relative;
 }
 
 #block0, #block1, #block2 {
@@ -26,6 +27,11 @@
   border-right: none;
 }
 
-.Red {
-  background-color: red;
+.XClass:after {
+  content: 'X';
+  font-size: 150px;
+  /* border: 1px solid red; */
+  position: absolute;
+  left: 20%;
+  top: -12%;
 }
