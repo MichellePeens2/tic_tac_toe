@@ -5,12 +5,11 @@ import { Button } from "../../components";
 const CELLS = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
 export default function Board({ onReset }: { onReset: () => void }) {
-  
   const [blocks, setBlocks] = useState<('X' | 'O' | '')[]>(CELLS.map(() => ''));   // ['', '', '', '', '', '', '', '', '']
 
   const onClick = (n: number) => {
     setBlocks(prevBlocks => {
-        const newBlockState = [...prevBlocks]; // copy by copy
+        const newBlockState = [...prevBlocks]; // copy by copy     
         // const newBlockState = prevBlocks; // copy by reference - not what we want in this case
         newBlockState[n] = 'X';
         return newBlockState;
