@@ -30,7 +30,6 @@
 .XClass:after {
   content: 'X';
   font-size: 150px;
-  /* border: 1px solid red; */
   position: absolute;
   left: 20%;
   top: -12%;
