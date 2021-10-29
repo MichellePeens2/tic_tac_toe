@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Form, TextField, Button, Header, Board, Error } from "./components";
-
-// How to add SCSS
 import "./App.css";
 
 function App() {
@@ -11,7 +9,7 @@ function App() {
   const [errors, setErrors] = useState<string[]>([]);
   const [didSubmit, setDidSubmit] = useState(false);
 
-  const play = () => {
+  const onPlay = () => {
     setErrors([]);
 
     if (playerOne === "") setErrors(["Player one is blank."]);
@@ -21,28 +19,11 @@ function App() {
     setDidSubmit(true);
   };
 
-  // useEffect(() => {
-  //   document.addEvenetListener("onScroll", doSomething);
-  //   console.log("hello");
-  //   return () => {
-  //     document.removeEventListener("onScroll", doSomething);
-  //   };
-  // }, []);
-
   useEffect(() => {
     setDisplayBoard(didSubmit && errors.length === 0);
   }, [errors, didSubmit]);
 
-  // mount
-  // add
-  // // state change ->
-  // // remove & add
-  // // state change
-  // // remove & add
-  // unmount
-  // remove
-
-  const restart = () => {
+  const onRestart = () => {
     setPlayerOne("");
     setPlayerTwo("");
     setErrors([]);
@@ -54,23 +35,17 @@ function App() {
     <div className="App">
       <Header title="Tic Tac Toe" />
 
-      {/* Warning: Each child in a list should have a unique "key" prop. */}
       {errors.map((error, index) => {
         return <Error key={index} message={error} />;
       })}
 
       {displayBoard ? (
-        <>
-          <Board />
-          <Button type="secondary" onClick={restart}>
-            Restart
-          </Button>
-        </>
+        <Board onReset={onRestart} />
       ) : (
         <Form>
           <TextField label="X" value={playerOne} setValue={setPlayerOne} />
           <TextField label="O" value={playerTwo} setValue={setPlayerTwo} />
-          <Button type="primary" onClick={play}>
+          <Button type="primary" onClick={onPlay}>
             Play
           </Button>
         </Form>
