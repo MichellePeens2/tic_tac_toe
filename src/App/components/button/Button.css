@@ -2,10 +2,11 @@
   font-weight: bolder;
   font-size: 24px;
   color: rgba(91, 157, 148, 1);
-  padding: 8px;
-  margin: 8px;
-  width: fit-content;
+  padding: 4px;
+  margin: 6px;
+  width: 274px;
   display: inline-block;
+  border-radius: 5px;
 }
 
 .PrimaryButton {
