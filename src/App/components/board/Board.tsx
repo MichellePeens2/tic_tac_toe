@@ -8,6 +8,7 @@ const CELLS = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 export default function Board({ playerOne, playerTwo, onReset }: { playerOne: Player, playerTwo: Player, onReset: () => void }) {
   const [board, setBoard] = useState<Symbol[]>(CELLS.map(() => ''));
   const [currentPlayer, setCurrentPlayer] = useState<Player>(playerOne);
+  const [winner, setWinner] = useState<Player | null>(null);
 
   const onClick = (index: number) => {
     setBoard(prevBoard => {
@@ -20,26 +21,36 @@ export default function Board({ playerOne, playerTwo, onReset }: { playerOne: Pl
     })
   }
 
-  const evaluate = (board: Symbol[]) => {
-    
+  const eveluateCells = (board: Symbol[], c1: number, c2: number, c3: number): Symbol | null => {
+    if (board[c1] !== '' && board[c1] === board[c2] && board[c2] === board[c3]) 
+      return board[c1] 
+    return null;
   }
+
+  const evaluate = useCallback((board: Symbol[]): void => {
+    let winning_symbol = eveluateCells(board, 0, 1, 2);
+
+    if(playerOne.symbol === winning_symbol) setWinner(playerOne);
+    if(playerTwo.symbol === winning_symbol) setWinner(playerTwo);
+
+  },[playerOne, playerTwo])
 
   useEffect(() => {
     evaluate(board);
-  }, [board])
+  }, [board, evaluate])
     
   return (
     <>
       <div className="Player">
         <p>{playerOne.name}</p>
         <p>{playerOne.symbol}</p>
-        <p>_</p>
+        <p className="Winner">{winner?.name === playerOne.name && 'WINNER'}</p>
       </div>
 
       <div className="Player">
         <p>{playerTwo.name}</p>
         <p>{playerTwo.symbol}</p>
-        <p>_</p>
+        <p className="Winner">{winner?.name === playerTwo.name && 'WINNER'}</p>
       </div>
 
       <div className="Board">

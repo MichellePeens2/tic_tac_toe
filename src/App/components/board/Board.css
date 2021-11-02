@@ -5,6 +5,13 @@
   font-weight: 24px;
 }
 
+.Winner {
+  color: green;
+  font-weight: bold;
+  height: 30px;
+  overflow: hidden;
+}
+
 .Board {
   width: 500px;
   height: 500px;
