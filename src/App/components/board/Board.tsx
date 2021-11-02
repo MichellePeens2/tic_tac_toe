@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./Board.css";
 import { Button } from "../../components";
 
@@ -6,8 +6,13 @@ const CELLS = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
 export default function Board({ playerX, playerO, onReset }: { playerX: string, playerO: string, onReset: () => void }) {
   const [blocks, setBlocks] = useState<('X' | 'O' | '')[]>(CELLS.map(() => ''));
-  const [currentPlayer, setCurrentPlayer] = useState(playerX);
+  const [currentPlayer, setCurrentPlayer] = useState<'X' | 'O'>('X');
   const [winningPlayer, setWinningPlayer] = useState<null | string>(null);
+
+  const setWinner = useCallback(() => { // readup
+    if(currentPlayer === 'X') setWinningPlayer(playerO);
+    if(currentPlayer === 'O') setWinningPlayer(playerX); 
+  }, [currentPlayer, playerX, playerO]);
 
   useEffect(() => {
     if(
@@ -73,29 +78,23 @@ export default function Board({ playerX, playerO, onReset }: { playerX: string, 
     ){
       setWinner();
     }
-  });
+  }, [blocks, setWinner]);
 
-  const setWinner = () => {
-    if(currentPlayer === playerX) setWinningPlayer(playerO); // because the currentPlayer has already moved on
-    if(currentPlayer === playerO) setWinningPlayer(playerX); 
-  }
-
-  const onClick = (n: number) => {
+  const onClick = (n: number) => { // can do setState nested
     setBlocks(prevBlocks => {
         const newBlockState = [...prevBlocks]; 
         
-        if(currentPlayer === playerX) newBlockState[n] = 'X'; 
-        if(currentPlayer === playerO) newBlockState[n] = 'O';
+        if(currentPlayer === 'X') {
+          newBlockState[n] = 'X'; 
+          setCurrentPlayer('O');
+        }
+
+        if(currentPlayer === 'O') {
+          newBlockState[n] = 'O';
+          setCurrentPlayer('X');
+        }
 
         return newBlockState;
-    })
-
-    setCurrentPlayer(prevPlayer => {
-      if(prevPlayer === playerX) {
-        return playerO;
-      } else {
-        return playerX;
-      }      
     })
   }
     
