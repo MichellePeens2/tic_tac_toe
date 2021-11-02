@@ -1,3 +1,10 @@
+.Player {
+  border: 1px solid white;
+  display: inline-block;
+  width: 45%;
+  font-weight: 24px;
+}
+
 .Board {
   width: 500px;
   height: 500px;
@@ -41,11 +48,4 @@
   position: absolute;
   left: 8%;
   top: -12%;
-}
-
-.Player {
-  border: 1px solid white;
-  display: inline-block;
-  width: 45%;
-  font-weight: 24px;
 }

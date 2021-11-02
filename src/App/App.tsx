@@ -1,35 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { Form, TextField, Button, Header, Board, Error } from "./components";
+import { Player } from "./types";
 import "./App.css";
 
 function App() {
-  const [playerX, setPlayerX] = useState("");
-  const [playerO, setPlayerO] = useState("");
-  const [displayBoard, setDisplayBoard] = useState(false);
+  const [playerOne, setPlayerOne] = useState<Player | null>(null);
+  const [playerTwo, setPlayerTwo] = useState<Player | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
-  const [didSubmit, setDidSubmit] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [displayBoard, setDisplayBoard] = useState(false);
 
-  // Found a bug when the player names are the same
   const onPlay = () => {
     setErrors([]);
 
-    if (playerX === "") setErrors(["Player X is blank."]);
-    if (playerO === "")
-      setErrors((prev) => [...prev, "Player O is blank."]);
+    if (playerOne === null) setErrors(["Player one is blank."]);
+    if (playerTwo === null) setErrors((prev) => [...prev, "Player two is blank."]);
 
-    setDidSubmit(true);
+      setSubmitted(true);
   };
 
   useEffect(() => {
-    setDisplayBoard(didSubmit && errors.length === 0);
-  }, [errors, didSubmit]);
+    setDisplayBoard(submitted && errors.length === 0);
+  }, [errors, submitted]);
 
   const onRestart = () => {
-    setPlayerX("");
-    setPlayerO("");
+    setPlayerOne(null);
+    setPlayerTwo(null);
     setErrors([]);
     setDisplayBoard(false);
-    setDidSubmit(false);
+    setSubmitted(false);
   };
 
   return (
@@ -40,16 +39,19 @@ function App() {
         return <Error key={index} message={error} />;
       })}
 
-      {displayBoard ? (
+      {/* Question: Is there another way to avoid the argument type (Player | null) in Board? */}
+      {displayBoard && playerOne && playerTwo ? (
         <Board 
-          playerX={playerX}
-          playerO={playerO} 
+          playerOne={playerOne}
+          playerTwo={playerTwo} 
           onReset={onRestart} 
         />
       ) : (
         <Form>
-          <TextField label="X" value={playerX} setValue={setPlayerX} />
-          <TextField label="O" value={playerO} setValue={setPlayerO} />
+          <TextField label="X" value={playerOne} setValue={setPlayerOne} />
+          <br/><br/>
+          <TextField label="O" value={playerTwo} setValue={setPlayerTwo} />
+          <br/><br/>
           <Button type="primary" onClick={onPlay}>
             Play
           </Button>

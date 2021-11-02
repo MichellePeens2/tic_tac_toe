@@ -1,116 +1,36 @@
 import React, { useCallback, useEffect, useState } from "react";
-import "./Board.css";
 import { Button } from "../../components";
+import { Player, Symbol } from "../../types";
+import "./Board.css";
 
 const CELLS = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
-export default function Board({ playerX, playerO, onReset }: { playerX: string, playerO: string, onReset: () => void }) {
-  const [blocks, setBlocks] = useState<('X' | 'O' | '')[]>(CELLS.map(() => ''));
-  const [currentPlayer, setCurrentPlayer] = useState<'X' | 'O'>('X');
-  const [winningPlayer, setWinningPlayer] = useState<null | string>(null);
+export default function Board({ playerOne, playerTwo, onReset }: { playerOne: Player, playerTwo: Player, onReset: () => void }) {
+  const [blocks, setBlocks] = useState<Symbol[]>(CELLS.map(() => ''));
+  const [currentPlayer, setCurrentPlayer] = useState<Player>(playerOne);
 
-  const setWinner = useCallback(() => { // readup
-    if(currentPlayer === 'X') setWinningPlayer(playerO);
-    if(currentPlayer === 'O') setWinningPlayer(playerX); 
-  }, [currentPlayer, playerX, playerO]);
-
-  useEffect(() => {
-    if(
-        (blocks[0] !== '') && 
-        (blocks[0] === blocks[1]) &&
-        (blocks[1] === blocks[2])
-      ){
-        setWinner();
-    }
-
-    if(
-      (blocks[3] !== '') && 
-      (blocks[3] === blocks[4]) &&
-      (blocks[4] === blocks[5])
-    ){
-      setWinner();
-    }
-
-    if(
-      (blocks[6] !== '') && 
-      (blocks[6] === blocks[7]) &&
-      (blocks[7] === blocks[8])
-    ){
-      setWinner();
-    }
-
-    if(
-      (blocks[0] !== '') && 
-      (blocks[0] === blocks[3]) &&
-      (blocks[3] === blocks[6])
-    ){
-      setWinner();
-    }
-
-    if(
-      (blocks[1] !== '') && 
-      (blocks[1] === blocks[4]) &&
-      (blocks[4] === blocks[7])
-    ){
-      setWinner();
-    }
-
-    if(
-      (blocks[2] !== '') && 
-      (blocks[2] === blocks[5]) &&
-      (blocks[5] === blocks[8])
-    ){
-      setWinner();
-    }
-
-    if(
-      (blocks[0] !== '') && 
-      (blocks[0] === blocks[4]) &&
-      (blocks[4] === blocks[8])
-    ){
-      setWinner();
-    }
-
-    if(
-      (blocks[2] !== '') && 
-      (blocks[2] === blocks[4]) &&
-      (blocks[4] === blocks[6])
-    ){
-      setWinner();
-    }
-  }, [blocks, setWinner]);
-
-  const onClick = (n: number) => { // can do setState nested
+  const onClick = (index: number) => {
     setBlocks(prevBlocks => {
-        const newBlockState = [...prevBlocks]; 
-        
-        if(currentPlayer === 'X') {
-          newBlockState[n] = 'X'; 
-          setCurrentPlayer('O');
-        }
-
-        if(currentPlayer === 'O') {
-          newBlockState[n] = 'O';
-          setCurrentPlayer('X');
-        }
-
+        const newBlockState = [...prevBlocks];    
+        newBlockState[index] = currentPlayer.symbol; 
+        currentPlayer.symbol === 'X' ? 
+          setCurrentPlayer(playerTwo) : 
+          setCurrentPlayer(playerOne)
         return newBlockState;
     })
   }
     
   return (
     <>
-      <p>{winningPlayer}</p>
-
       <div className="Player">
-        <p>{playerX}</p>
-        <p>X</p>
+        <p>{playerOne.name}</p>
+        <p>{playerOne.symbol}</p>
         <p>_</p>
       </div>
 
       <div className="Player">
-        <p>{playerO}</p>
-        <p>O</p>
+        <p>{playerTwo.name}</p>
+        <p>{playerTwo.symbol}</p>
         <p>_</p>
       </div>
 
