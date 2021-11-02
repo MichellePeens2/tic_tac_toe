@@ -34,3 +34,18 @@
   left: 20%;
   top: -12%;
 }
+
+.OClass:after {
+  content: 'O';
+  font-size: 150px;
+  position: absolute;
+  left: 8%;
+  top: -12%;
+}
+
+.Player {
+  border: 1px solid white;
+  display: inline-block;
+  width: 45%;
+  font-weight: 24px;
+}

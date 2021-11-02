@@ -2,43 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Form, TextField, Button, Header, Board, Error } from "./components";
 import "./App.css";
 
-// Things I learned this week
-// 1. useEffect 
-  // // specifying a dependency is a way to skip running effects to optimize for performance 
-  // useEffect(() => {
-  //   // fetch
-  //   return () => {
-  //     // cleanup
-  //   }
-  // }); // no_dependency: means it will run every single time
-  // useEffect(() => {
-  // }, []); // empty_dependency: means it will only run once at initial render
-  // useEffect(() => {
-  // }, [something]); // some_dependency: means it will only when the dependecy changes
-// 2. Copy by reference vs copy by value
-  // setBlocks(prevBlocks => {
-  //   const newBlockState = [...prevBlocks]; // copy by copy     
-  //   // const newBlockState = prevBlocks; // copy by reference - not what we want in this case
-  //   newBlockState[n] = 'X';
-  //   return newBlockState;
-  // })  
-// 3. Type refinement 
-  // useState<('X' | 'O' | '')[]> 
-  // useState<(string | undefined)[]> 
-
 function App() {
-  const [playerOne, setPlayerOne] = useState("");
-  const [playerTwo, setPlayerTwo] = useState("");
+  const [playerX, setPlayerX] = useState("");
+  const [playerO, setPlayerO] = useState("");
   const [displayBoard, setDisplayBoard] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [didSubmit, setDidSubmit] = useState(false);
 
+  // Found a bug when the player names are the same
   const onPlay = () => {
     setErrors([]);
 
-    if (playerOne === "") setErrors(["Player one is blank."]);
-    if (playerTwo === "")
-      setErrors((prev) => [...prev, "Player two is blank."]);
+    if (playerX === "") setErrors(["Player X is blank."]);
+    if (playerO === "")
+      setErrors((prev) => [...prev, "Player O is blank."]);
 
     setDidSubmit(true);
   };
@@ -48,8 +25,8 @@ function App() {
   }, [errors, didSubmit]);
 
   const onRestart = () => {
-    setPlayerOne("");
-    setPlayerTwo("");
+    setPlayerX("");
+    setPlayerO("");
     setErrors([]);
     setDisplayBoard(false);
     setDidSubmit(false);
@@ -64,11 +41,15 @@ function App() {
       })}
 
       {displayBoard ? (
-        <Board onReset={onRestart} />
+        <Board 
+          playerX={playerX}
+          playerO={playerO} 
+          onReset={onRestart} 
+        />
       ) : (
         <Form>
-          <TextField label="X" value={playerOne} setValue={setPlayerOne} />
-          <TextField label="O" value={playerTwo} setValue={setPlayerTwo} />
+          <TextField label="X" value={playerX} setValue={setPlayerX} />
+          <TextField label="O" value={playerO} setValue={setPlayerO} />
           <Button type="primary" onClick={onPlay}>
             Play
           </Button>
