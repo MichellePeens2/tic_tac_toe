@@ -14,9 +14,10 @@
 }
 
 .SecondaryButton {
-  background-color: #000000;
+  background-color: #57726f;
+  color: white;
 }
 
 .DestructiveButton {
-    background-color: #7a3b3b;
+    background-color: #bf4242;
 }

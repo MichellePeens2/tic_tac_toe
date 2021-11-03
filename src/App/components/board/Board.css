@@ -1,15 +1,33 @@
 .Player {
   border: 1px solid white;
   display: inline-block;
+  height: 162px;
   width: 45%;
   font-weight: 24px;
 }
 
+.PlayerSymbol {
+  margin-bottom: 0;
+}
+
+.PlayerName {
+  margin-top: 0;
+}
+
 .Winner {
-  color: green;
+  color: #5ee35e;
   font-weight: bold;
   height: 30px;
   overflow: hidden;
+  margin-top: 0;
+}
+
+.Loser {
+  color: #bf4242;
+  font-weight: bold;
+  height: 30px;
+  overflow: hidden;
+  margin-top: 0;
 }
 
 .Board {
@@ -23,6 +41,7 @@
 .Block {
     border: 2px solid white;
     position: relative;
+    cursor: pointer;
 }
 
 #block0, #block1, #block2 {
@@ -56,3 +75,24 @@
   left: 8%;
   top: -12%;
 }
+
+.XHover:hover:after {
+  content: 'X';
+  font-size: 150px;
+  position: absolute;
+  left: 20%;
+  top: -12%;
+  color: #57726f;
+  opacity: 0.8;
+}
+
+.OHover:hover:after {
+  content: 'O';
+  font-size: 150px;
+  position: absolute;
+  left: 8%;
+  top: -12%;
+  color: #57726f;
+  opacity: 0.8;
+}
+

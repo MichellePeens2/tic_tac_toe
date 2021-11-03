@@ -14,14 +14,11 @@ function App() {
     setErrors([]);
 
     if (playerOne === null) setErrors(["Player one is blank."]);
-    if (playerTwo === null) setErrors((prev) => [...prev, "Player two is blank."]);
+    if (playerTwo === null)
+      setErrors((prev) => [...prev, "Player two is blank."]);
 
-      setSubmitted(true);
+    setSubmitted(true);
   };
-
-  useEffect(() => {
-    setDisplayBoard(submitted && errors.length === 0);
-  }, [errors, submitted]);
 
   const onRestart = () => {
     setPlayerOne(null);
@@ -30,6 +27,10 @@ function App() {
     setDisplayBoard(false);
     setSubmitted(false);
   };
+
+  useEffect(() => {
+    setDisplayBoard(submitted && errors.length === 0);
+  }, [errors, submitted]);
 
   return (
     <div className="App">
@@ -41,17 +42,19 @@ function App() {
 
       {/* Question: Is there another way to avoid the argument type (Player | null) in Board? */}
       {displayBoard && playerOne && playerTwo ? (
-        <Board 
+        <Board
           playerOne={playerOne}
-          playerTwo={playerTwo} 
-          onReset={onRestart} 
+          playerTwo={playerTwo}
+          onRestart={onRestart}
         />
       ) : (
         <Form>
           <TextField label="X" value={playerOne} setValue={setPlayerOne} />
-          <br/><br/>
+          <br />
+          <br />
           <TextField label="O" value={playerTwo} setValue={setPlayerTwo} />
-          <br/><br/>
+          <br />
+          <br />
           <Button type="primary" onClick={onPlay}>
             Play
           </Button>
