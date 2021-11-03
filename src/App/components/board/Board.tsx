@@ -78,12 +78,12 @@ export default function Board({
   };
 
   useEffect(() => {
-    evaluate(board);
-  }, [board, evaluate]);
-
-  useEffect(() => {
     isGameOver(winner, board);
   }, [winner, board]);
+
+  useEffect(() => {
+    evaluate(board);
+  }, [board, evaluate]);
 
   return (
     <>
