@@ -61,29 +61,29 @@ export default function Board({
   };
 
   const evaluateRows = useCallback((board: Symbol[]): Symbol | null => {
-    let result = null;
-
-    [0, 3, 6].every((index) => {
-
-      let ws = eveluateCells(board, index, index + 1, index + 2);
-
-      if (ws) {
-        result = ws;
-        return false;
-      } else {
-        return true;  
-      };
+    let ws = null;
+    [0, 3, 6].forEach((index) => {
+      let tmp = eveluateCells(board, index, index + 1, index + 2);
+      if(tmp){
+        ws = tmp
+        return;
+      }
+      return;
     });
-    
-    return result;
+    return ws;
   }, []);
 
   const evaluateColumns = useCallback((board: Symbol[]): Symbol | null => {
+    let ws = null;
     [0, 1, 2].forEach((index) => {
-      let ws = eveluateCells(board, index, index + 3, index + 6);
-      if (ws) return ws;
+      let tmp = eveluateCells(board, index, index + 3, index + 6);
+      if(tmp){
+        ws = tmp
+        return;
+      }
+      return;
     });
-    return null;
+    return ws;
   }, []);
 
   const evaluateDiagonals = useCallback((board: Symbol[]): Symbol | null => {
