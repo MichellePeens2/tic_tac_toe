@@ -1,7 +1,5 @@
-import './Header.css'
+import "./Header.css";
 
-export default function Header({title}: {title: string} ) {
-    return (
-        <h1 className='Header'>{title}</h1>
-    );
+export default function Header({ title }: { title: string }) {
+  return <h1 className="Header">{title}</h1>;
 }

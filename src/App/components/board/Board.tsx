@@ -91,14 +91,18 @@ export default function Board({
         <h1 className="PlayerSymbol">{playerOne.symbol}</h1>
         <p className="PlayerName">{playerOne.name}</p>
         {winner && winner === playerOne && <p className="Winner">WINNER</p>}
-        {((winner && winner !== playerOne) || gameOver) && <p className="Loser">LOSER</p>}
+        {((winner && winner !== playerOne) || gameOver) && (
+          <p className="Loser">LOSER</p>
+        )}
       </div>
 
       <div className="Player">
         <h1 className="PlayerSymbol">{playerTwo.symbol}</h1>
         <p className="PlayerName">{playerTwo.name}</p>
         {winner && winner === playerTwo && <p className="Winner">WINNER</p>}
-        {((winner && winner !== playerTwo) || gameOver) && <p className="Loser">LOSER</p>}
+        {((winner && winner !== playerTwo) || gameOver) && (
+          <p className="Loser">LOSER</p>
+        )}
       </div>
 
       <div className="Board">

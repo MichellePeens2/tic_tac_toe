@@ -10,7 +10,10 @@ export default function TextField({
   value: Player | null;
   setValue: (value: Player) => void;
 }) {
-  const onChange = (label: Symbol, event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (
+    label: Symbol,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const player: Player = {
       name: event.target.value,
       symbol: label,
@@ -24,8 +27,10 @@ export default function TextField({
       <input
         className="Input"
         type="text"
-        value={value?.name || ''}
-        onChange={(event) => {onChange(label, event)}}
+        value={value?.name || ""}
+        onChange={(event) => {
+          onChange(label, event);
+        }}
       />
     </>
   );

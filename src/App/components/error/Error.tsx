@@ -1,7 +1,5 @@
-import './Error.css'
+import "./Error.css";
 
-export default function Error({message}: {message: string}) {
-    return (
-        <p className="Error">{message}</p>
-    )
+export default function Error({ message }: { message: string }) {
+  return <p className="Error">{message}</p>;
 }
