@@ -17,11 +17,9 @@ function Block({
   return (
     <div
       id={`block${index}`}
-      className={
-        `Block 
+      className={`Block 
         ${board[index] === "X" ? "XClass" : ""} 
-        ${board[index] === "O" ? "OClass" : ""}`
-      }
+        ${board[index] === "O" ? "OClass" : ""}`}
       onClick={() => onClick(index)}
     />
   );
@@ -62,31 +60,48 @@ export default function Board({
     return null;
   };
 
-  const evaluateRows = (board: Symbol[]): Symbol | null => { 
-    [0, 3, 6].forEach((value) => {
-      let ws = eveluateCells(board, value, value+1, value+2);  
-      if(ws) return ws;
+  const evaluateRows = useCallback((board: Symbol[]): Symbol | null => {
+    let result = null;
+
+    [0, 3, 6].every((index) => {
+
+      let ws = eveluateCells(board, index, index + 1, index + 2);
+
+      if (ws) {
+        result = ws;
+        return false;
+      } else {
+        return true;  
+      };
+    });
+    
+    return result;
+  }, []);
+
+  const evaluateColumns = useCallback((board: Symbol[]): Symbol | null => {
+    [0, 1, 2].forEach((index) => {
+      let ws = eveluateCells(board, index, index + 3, index + 6);
+      if (ws) return ws;
     });
     return null;
-  }
+  }, []);
+
+  const evaluateDiagonals = useCallback((board: Symbol[]): Symbol | null => {
+    let ws = eveluateCells(board, 0, 4, 8);
+    if (!ws) ws = eveluateCells(board, 2, 4, 6);
+    return ws;
+  }, []);
 
   const evaluate = useCallback(
     (board: Symbol[]): void => {
-      let ws = eveluateCells(board, 0, 1, 2);
-      if (!ws) ws = eveluateCells(board, 3, 4, 5);
-      if (!ws) ws = eveluateCells(board, 6, 7, 8);
-
-      if (!ws) ws = eveluateCells(board, 0, 3, 6);
-      if (!ws) ws = eveluateCells(board, 1, 4, 7);
-      if (!ws) ws = eveluateCells(board, 2, 5, 8);
-
-      if (!ws) ws = eveluateCells(board, 0, 4, 8);
-      if (!ws) ws = eveluateCells(board, 2, 4, 6);
+      let ws = evaluateRows(board);
+      if (!ws) ws = evaluateColumns(board);
+      if (!ws) ws = evaluateDiagonals(board);
 
       if (playerOne.symbol === ws) setWinner(playerOne);
       if (playerTwo.symbol === ws) setWinner(playerTwo);
     },
-    [playerOne, playerTwo]
+    [playerOne, playerTwo, evaluateRows, evaluateColumns, evaluateDiagonals]
   );
 
   useEffect(() => {
@@ -109,7 +124,9 @@ export default function Board({
 
       <div className="Board">
         {CELLS.map((_, index) => {
-          return <Block index={index} onClick={onClick} board={board} />;
+          return (
+            <Block key={index} index={index} onClick={onClick} board={board} />
+          );
         })}
       </div>
 
