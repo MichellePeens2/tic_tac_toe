@@ -6,7 +6,7 @@
   font-weight: 24px;
 }
 
-.PlayerSymbol {
+.PlayerCharacter {
   margin-bottom: 0;
 }
 
@@ -24,6 +24,14 @@
 
 .Loser {
   color: #bf4242;
+  font-weight: bold;
+  height: 30px;
+  overflow: hidden;
+  margin-top: 0;
+}
+
+.Tie {
+  color: white;
   font-weight: bold;
   height: 30px;
   overflow: hidden;
@@ -58,6 +66,10 @@
 
 #block2, #block5, #block8 {
   border-right: none;
+}
+
+.XClass, .OClass, .Complete {
+  pointer-events: none;
 }
 
 .XClass:after {
@@ -95,4 +107,3 @@
   color: #57726f;
   opacity: 0.8;
 }
-
