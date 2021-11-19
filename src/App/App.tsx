@@ -40,7 +40,6 @@ function App() {
         return <Error key={index} message={error} />;
       })}
 
-      {/* Question: Is there another way to avoid the argument type (Player | null) in Board? */}
       {displayBoard && playerOne && playerTwo ? (
         <Board
           playerOne={playerOne}

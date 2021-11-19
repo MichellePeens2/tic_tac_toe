@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../components";
-import { Player, Symbol } from "../../types";
-import { evaluateRows, evaluateColumns, evaluateDiagonals } from "./helpers";
+import { Player, Character } from "../../types";
+import { findWinner } from "./helpers";
 import "./Board.css";
 
 const CELLS = [0, 1, 2, 3, 4, 5, 6, 7, 8];
@@ -9,22 +9,30 @@ const CELLS = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 function Block({
   index,
   board,
-  symbol,
+  character,
+  complete,
   onClick,
 }: {
   index: number;
-  board: Symbol[];
-  symbol: Symbol;
+  board: Character[];
+  character: Character;
+  complete: Boolean;
   onClick: (index: number) => void;
 }) {
+  const classNames: string[] = [];
+  if (board[index] === "X") {
+    classNames.push("XClass");
+  } else if (board[index] === "O") {
+    classNames.push("OClass");
+  } else {
+    classNames.push(`${character}Hover`);
+  }
+  if (complete) classNames.push("Complete");
+
   return (
     <div
       id={`block${index}`}
-      className={`Block${board[index] === "X" ? " XClass" : ""}${
-        board[index] === "O" ? " OClass" : ""
-      }${
-        board[index] !== "X" && board[index] !== "O" ? ` ${symbol}Hover` : ""
-      }`}
+      className={`Block ${classNames.join(" ")}`}
       onClick={() => onClick(index)}
     />
   );
@@ -39,70 +47,59 @@ export default function Board({
   playerTwo: Player;
   onRestart: () => void;
 }) {
-  const [board, setBoard] = useState<Symbol[]>(CELLS.map(() => ""));
+  const [board, setBoard] = useState<Character[]>(CELLS.map(() => ""));
   const [currentPlayer, setCurrentPlayer] = useState<Player>(playerOne);
   const [winner, setWinner] = useState<Player | null>(null);
-  const [gameOver, setGameOver] = useState<Boolean>(false);
+  const [complete, setComplete] = useState<Boolean>(false);
+  const isFull = board.every((cell) => cell !== "");
 
   const onReset = () => {
     setBoard(CELLS.map(() => ""));
     setCurrentPlayer(playerOne);
     setWinner(null);
+    setComplete(false);
   };
 
   const onClick = (index: number) => {
     setBoard((prevBoard) => {
       const newBoardState = [...prevBoard];
-      newBoardState[index] = currentPlayer.symbol;
-      currentPlayer.symbol === "X"
-        ? setCurrentPlayer(playerTwo)
-        : setCurrentPlayer(playerOne);
+      newBoardState[index] = currentPlayer.character;
+
+      if (currentPlayer.character === "X") {
+        setCurrentPlayer(playerTwo);
+      } else {
+        setCurrentPlayer(playerOne);
+      }
       return newBoardState;
     });
   };
 
-  const evaluate = useCallback(
-    (board: Symbol[]): void => {
-      let ws = evaluateRows(board);
-      if (!ws) ws = evaluateColumns(board);
-      if (!ws) ws = evaluateDiagonals(board);
+  useEffect(() => {
+    const wc = findWinner(board);
+    if (wc === playerOne.character) setWinner(playerOne);
+    if (wc === playerTwo.character) setWinner(playerTwo);
 
-      if (ws && ws === playerOne.symbol) setWinner(playerOne);
-      if (ws && ws === playerTwo.symbol) setWinner(playerTwo);
-    },
-    [playerOne, playerTwo]
-  );
+    setComplete(wc !== null || isFull);
+  }, [board, playerOne, playerTwo, isFull]);
 
-  const isGameOver = (winner: Player | null, board: Symbol[]): void => {
-    setGameOver(!winner && board.indexOf("") === -1);
+  const renderPlayerStatus = (player: Player) => {
+    if (winner === player) return <p className="Winner">WINNER</p>;
+    if (winner && winner !== player) return <p className="Loser">LOSER</p>;
+    if (isFull) return <p className="Tie">TIE</p>;
   };
-
-  useEffect(() => {
-    isGameOver(winner, board);
-  }, [winner, board]);
-
-  useEffect(() => {
-    evaluate(board);
-  }, [board, evaluate]);
 
   return (
     <>
       <div className="Player">
-        <h1 className="PlayerSymbol">{playerOne.symbol}</h1>
+        <h1 className="PlayerCharacter">{playerOne.character}</h1>
         <p className="PlayerName">{playerOne.name}</p>
-        {winner && winner === playerOne && <p className="Winner">WINNER</p>}
-        {((winner && winner !== playerOne) || gameOver) && (
-          <p className="Loser">LOSER</p>
-        )}
+        {complete && renderPlayerStatus(playerOne)}
       </div>
 
       <div className="Player">
-        <h1 className="PlayerSymbol">{playerTwo.symbol}</h1>
+        <h1 className="PlayerCharacter">{playerTwo.character}</h1>
         <p className="PlayerName">{playerTwo.name}</p>
-        {winner && winner === playerTwo && <p className="Winner">WINNER</p>}
-        {((winner && winner !== playerTwo) || gameOver) && (
-          <p className="Loser">LOSER</p>
-        )}
+        {complete && renderPlayerStatus(playerTwo)}
       </div>
 
       <div className="Board">
@@ -112,7 +109,8 @@ export default function Board({
               key={index}
               index={index}
               board={board}
-              symbol={currentPlayer.symbol}
+              character={currentPlayer.character}
+              complete={complete}
               onClick={onClick}
             />
           );

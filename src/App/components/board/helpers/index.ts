@@ -1,43 +1,40 @@
-import { Symbol } from "../../../types";
+import { Character } from "../../../types";
 
-export const evaluateRows = (board: Symbol[]): Symbol | null => {
-  let ws = null;
-  [0, 3, 6].forEach((index) => {
-    let tmp = eveluateCells(board, index, index + 1, index + 2);
-    if (tmp) {
-      ws = tmp;
-      return;
-    }
-    return;
-  });
-  return ws;
+export const findWinner = (board: Character[]): Character | null => {
+  let wc = evaluateRows(board);
+  if (!wc) wc = evaluateColumns(board);
+  if (!wc) wc = evaluateDiagonals(board);
+  return wc;
 };
 
-export const evaluateColumns = (board: Symbol[]): Symbol | null => {
-  let ws = null;
-  [0, 1, 2].forEach((index) => {
-    let tmp = eveluateCells(board, index, index + 3, index + 6);
-    if (tmp) {
-      ws = tmp;
-      return;
-    }
-    return;
-  });
-  return ws;
+const evaluateRows = (board: Character[]): Character | null => {
+  for (let index of [0, 3, 6]) {
+    let wc = evaluateCells(board, index, index + 1, index + 2);
+    if (wc) return wc;
+  }
+  return null;
 };
 
-export const evaluateDiagonals = (board: Symbol[]): Symbol | null => {
-  let ws = eveluateCells(board, 0, 4, 8);
-  if (!ws) ws = eveluateCells(board, 2, 4, 6);
-  return ws;
+const evaluateColumns = (board: Character[]): Character | null => {
+  for (let index of [0, 1, 2]) {
+    let wc = evaluateCells(board, index, index + 3, index + 6);
+    if (wc) return wc;
+  }
+  return null;
 };
 
-const eveluateCells = (
-  board: Symbol[],
+const evaluateDiagonals = (board: Character[]): Character | null => {
+  let wc = evaluateCells(board, 0, 4, 8);
+  if(wc) return wc;
+  return evaluateCells(board, 2, 4, 6);
+};
+
+const evaluateCells = (
+  board: Character[],
   c1: number,
   c2: number,
   c3: number
-): Symbol | null => {
+): Character | null => {
   if (board[c1] !== "" && board[c1] === board[c2] && board[c2] === board[c3])
     return board[c1];
   return null;

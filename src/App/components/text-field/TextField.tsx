@@ -1,4 +1,4 @@
-import { Player, Symbol } from "../../types";
+import { Player, Character } from "../../types";
 import "./TextField.css";
 
 export default function TextField({
@@ -6,17 +6,17 @@ export default function TextField({
   value,
   setValue,
 }: {
-  label: Symbol;
+  label: Character;
   value: Player | null;
   setValue: (value: Player) => void;
 }) {
   const onChange = (
-    label: Symbol,
+    label: Character,
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const player: Player = {
       name: event.target.value,
-      symbol: label,
+      character: label,
     };
     setValue(player);
   };
